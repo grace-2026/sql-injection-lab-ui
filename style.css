@@ -1,0 +1,58 @@
+function isSQLi(payload) {
+  const patterns = [
+    /' *or *'1' *= *'1/i,
+    /" *or *"1" *= *"1/i,
+    /or *1 *= *1/i
+  ];
+  return patterns.some(p => p.test(payload));
+}
+
+function runAttack() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  const level = document.getElementById("level").value;
+
+  const query = `SELECT * FROM users WHERE username='${username}' AND password='${password}'`;
+
+  let result = "";
+  let hint = "";
+
+  // ✅ Level 1 (로그인 우회)
+  if (level == "1") {
+    hint = "' OR '1'='1 입력해보세요";
+
+    if (isSQLi(username) || isSQLi(password)) {
+      result = "✅ 로그인 성공 (SQL Injection 성공)";
+    } else {
+      result = "❌ 로그인 실패";
+    }
+  }
+
+  // ✅ Level 2 (UNION)
+  if (level == "2") {
+    hint = "UNION SELECT 사용";
+
+    if (/union/i.test(username) || /union/i.test(password)) {
+      result = "✅ 데이터 탈취 성공: admin / password123";
+    } else {
+      result = "❌ 실패";
+    }
+  }
+
+  // ✅ Level 3 (Blind)
+  if (level == "3") {
+    hint = "1=1 또는 1=2 사용";
+
+    if (/1 *= *1/.test(username)) {
+      result = "✅ TRUE (참)";
+    } else if (/1 *= *2/.test(username)) {
+      result = "❌ FALSE (거짓)";
+    } else {
+      result = "❓ 결과 불명";
+    }
+  }
+
+  document.getElementById("query").innerText = query;
+  document.getElementById("result").innerText = result;
+  document.getElementById("hint").innerText = hint;
+}

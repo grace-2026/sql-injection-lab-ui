@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>SQL Injection Lab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>🧪 SQL Injection 실습 랩</h1>
+
+    <div class="warning">
+      ⚠️ 이 서비스는 교육용이며 실제 해킹에 사용하면 안 됩니다. (로컬 실습 전용)
+    </div>
+
+    <div class="level-selector">
+      <label>난이도 선택:</label>
+      <select id="level">
+        <option value="1">Level 1 - 로그인 우회</option>
+        <option value="2">Level 2 - UNION 공격</option>
+        <option value="3">Level 3 - Blind Injection</option>
+      </select>
+    </div>
+
+    <div class="lab-box">
+      <h2 id="level-title">Level 1</h2>
+      <p id="description"></p>
+
+      <input type="text" id="username" placeholder="username">
+      <input type="text" id="password" placeholder="password">
+      <button onclick="runAttack()">실행</button>
+
+      <div class="output">
+        <h3>실행된 SQL</h3>
+        <pre id="query"></pre>
+
+        <h3>결과</h3>
+        <pre id="result"></pre>
+
+        <h3>힌트</h3>
+        <pre id="hint"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
